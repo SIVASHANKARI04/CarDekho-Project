@@ -5,12 +5,12 @@ import pickle
 import base64
 
 # Load the pickle file containing the model
-model_location = "E:\DSDemo\env\car_price_model (1).pkl"
+model_location = "model.pkl"
 with open(model_location, 'rb') as file:
     model = pickle.load(file)
 
 # Load the dataset for dropdown options
-fl = pd.read_csv('E:\DSDemo\env\car_dheko_filled (1).csv')
+fl = pd.read_csv('car_dheko_filled.csv')
 
 # Clean and preprocess dataset
 # Remove commas from `Kms_Driven` and convert to integer
@@ -35,7 +35,7 @@ def set_bg_image(image_path):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Set your background image file path
-set_bg_image("E:\DSDemo\env\pexels-mikebirdy-120049.jpg")
+set_bg_image("pexels-mikebirdy-120049.jpg")
 
 # Custom CSS for Sidebar Styling with White, Black, and Blue
 sidebar_style = """
