@@ -1,17 +1,18 @@
+import pandas as pd
 import streamlit as st
 import numpy as np
-import pandas as pd
 import pickle
 import base64
 import re
+import json
 
 # Load the pickle file containing the model
-model_location = "E:\DSDemo\env\car_price_bestmodel.pkl"
+model_location = "E:\DSDemo\env\project\env\Scripts\env\car_price_bestmodel.pkl"
 with open(model_location, 'rb') as file:
     model = pickle.load(file)
 
 # Load the dataset for dropdown options
-fl = pd.read_csv('E:\DSDemo\env\Car_Dheko_Datas.csv')
+fl = pd.read_csv('E:\DSDemo\env\project\env\Scripts\env\Car_Dheko_Datas.csv')
 
 # Clean and preprocess dataset
 fl['Kms Driven'] = fl['Kms Driven'].fillna(0).astype(str).str.replace(',', '').astype(int)
@@ -22,9 +23,9 @@ def predict_car_price(brand, model_name, year, kms_driven, fuel_type, transmissi
     try:
         # Ensure correct category encoding
         if brand not in fl['oem'].unique():
-            return f"Error: Brand '{brand}' not found in the dataset."
+            return {"error": f"Brand '{brand}' not found in the dataset."}
         if model_name not in fl['model'].unique():
-            return f"Error: Model '{model_name}' not found in the dataset."
+            return {"error": f"Model '{model_name}' not found in the dataset."}
 
         body_type_encoded = fl['oem'].astype('category').cat.categories.get_loc(brand)
         model_name_encoded = fl['model'].astype('category').cat.categories.get_loc(model_name)
@@ -32,9 +33,9 @@ def predict_car_price(brand, model_name, year, kms_driven, fuel_type, transmissi
         input_data = np.array([[body_type_encoded, model_name_encoded, year, kms_driven, 
                                 fuel_type, transmission, engine_displacement]])
         predicted_price = model.predict(input_data)[0]
-        return f"The predicted price of the {brand} {model_name} ({year}) is: ₹{predicted_price:,.2f}"
+        return {"predicted_price": f"₹{predicted_price:,.2f}", "brand": brand, "model": model_name, "year": year}
     except Exception as e:
-        return f"Error during prediction: {str(e)}"
+        return {"error": f"Error during prediction: {str(e)}"}
 
 # Set up background image
 def set_bg_image(image_path):
@@ -52,7 +53,7 @@ def set_bg_image(image_path):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Set your background image file path
-set_bg_image("E:\DSDemo\env\pngtree-gray-coupe-plugin-hybrid-3d-rendering-a-concept-sports-car-with-image_3700199.jpg")
+set_bg_image("E:\DSDemo\env\project\env\Scripts\env\pngtree-gray-coupe-plugin-hybrid-3d-rendering-a-concept-sports-car-with-image_3700199.jpg")
 
 # Streamlit app
 st.title("Car Price Prediction Chatbot 🚗")
@@ -71,7 +72,7 @@ if user_query:
         match = re.search(price_pattern, user_query.lower())
         brand, model_name, year = match.groups()
         response = predict_car_price(brand.capitalize(), model_name.capitalize(), int(year), 10000, 'Petrol', 'Manual', 1200)
-        st.write(response)
+        st.json(response)  # Display the response as JSON
 
     # Handle show details query
     elif re.search(detail_pattern, user_query.lower()):
@@ -79,11 +80,12 @@ if user_query:
         brand, year = match.groups()
         filtered_data = fl[(fl['oem'].str.lower() == brand.lower()) & (fl['modelYear'] == int(year))]
         if filtered_data.empty:
-            st.write(f"No details found for {brand} ({year}).")
+            st.json({"error": f"No details found for {brand} ({year})."})  # JSON response for no data
         else:
-            st.write(filtered_data.head())
+            st.json(filtered_data.head().to_dict(orient="records"))  # Display the details as JSON
 
     # Handle unsupported queries
     else:
-        st.write("Sorry, I can only help with price predictions and car details queries right now.")
+        st.json({"error": "Sorry, I can only help with price predictions and car details queries right now."})
+
 
