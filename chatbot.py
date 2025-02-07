@@ -12,10 +12,10 @@ with open(model_location, 'rb') as file:
     model = pickle.load(file)
 
 # Load the dataset for dropdown options
-fl = pd.read_csv('car_dheko_Final.csv')
+fl = pd.read_csv('car_dheko_filled.csv')
 
 # Clean and preprocess dataset
-fl['Kms Driven'] = fl['Kms Driven'].fillna(0).astype(str).str.replace(',', '').astype(int)
+fl['Kms_Driven'] = fl['Kms_Driven'].fillna(0).astype(str).str.replace(',', '').astype(int)
 fl['Max Power'] = fl['Max Power'].str.extract(r'(\d+\.?\d*)').astype(float)
 
 # Function to predict car prices
@@ -87,5 +87,6 @@ if user_query:
     # Handle unsupported queries
     else:
         st.json({"error": "Sorry, I can only help with price predictions and car details queries right now."})
+
 
 
