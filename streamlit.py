@@ -5,18 +5,15 @@ import pickle
 import base64
 
 # Load the pickle file containing the model
-model_location = "E:\DSDemo\env\car_price_model (1).pkl"
+model_location = "model.pkl"
 with open(model_location, 'rb') as file:
     model = pickle.load(file)
 
 # Load the dataset for dropdown options
-fl = pd.read_csv('E:\DSDemo\env\car_dheko_filled (1).csv')
+fl = pd.read_csv('car_dheko_filled (1).csv')
 
 # Clean and preprocess dataset
-# Remove commas from `Kms_Driven` and convert to integer
 fl['Kms_Driven'] = fl['Kms_Driven'].fillna(0).astype(str).str.replace(',', '').astype(int)
-
-# Extract numeric values from `Max Power`
 fl['Max Power'] = fl['Max Power'].str.extract(r'(\d+\.?\d*)').astype(float)
 
 # Set up background image
@@ -35,7 +32,7 @@ def set_bg_image(image_path):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Set your background image file path
-set_bg_image("E:\DSDemo\env\pexels-mikebirdy-120049.jpg")
+set_bg_image("pexels-mikebirdy-120049.jpg")
 
 # Custom CSS for Sidebar Styling with White, Black, and Blue
 sidebar_style = """
@@ -55,15 +52,12 @@ sidebar_style = """
 """
 st.markdown(sidebar_style, unsafe_allow_html=True)
 
-
-# Streamlit app
+# Streamlit app title
 st.title("Car Price Prediction App")
 st.write("Enter the details of the car to predict its price.")
 
 # Sidebar for filtering options
 st.sidebar.header('Filter Options')
-
-# Filter data dynamically based on user selections
 city = st.sidebar.selectbox("Select the city:", options=fl['city'].unique())
 filtered_data = fl[fl['city'] == city]
 
@@ -108,7 +102,7 @@ filtered_data = filtered_data[filtered_data['Max Power'] == max_power]
 Acceleration = st.sidebar.selectbox("Select Acceleration type:", options=sorted(filtered_data['Acceleration'].unique()))
 filtered_data = filtered_data[filtered_data['Acceleration'] == Acceleration]
 
-# Predict button
+# Predict button and price display
 if st.button("Predict Price"):
     try:
         # Encode categorical variables
@@ -126,14 +120,15 @@ if st.button("Predict Price"):
                                 fuel_type_encoded, ownership_encoded, transmission_encoded, engine_type_encoded, 
                                 seating_capacity, Mileage, max_power, engine_displacement, kms_driven, Acceleration]])
 
-         # Predict price
+        # Predict price
         predicted_price = model.predict(input_data)[0]
 
-       # Display the predicted price, styled and in the same order
+        # Display the predicted price, styled and in the same order
         st.markdown(f"<h3 style='text-align: center; color: darkblue;'>The predicted price of the car is: ₹{predicted_price:,.2f}</h3>", unsafe_allow_html=True)
     except Exception as e:
         st.error(f"An error occurred during prediction: {str(e)}")
-   
+
 st.write("Note: This is a demo app. The predictions depend on the model's training data.")
+
 
 

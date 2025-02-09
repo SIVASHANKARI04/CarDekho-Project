@@ -7,15 +7,15 @@ import re
 import json
 
 # Load the pickle file containing the model
-model_location = "E:\DSDemo\env\project\env\Scripts\env\car_price_bestmodel.pkl"
+model_location = "model.pkl"
 with open(model_location, 'rb') as file:
     model = pickle.load(file)
 
 # Load the dataset for dropdown options
-fl = pd.read_csv('E:\DSDemo\env\project\env\Scripts\env\Car_Dheko_Datas.csv')
+fl = pd.read_csv('car_dheko_filled (1).csv')
 
 # Clean and preprocess dataset
-fl['Kms Driven'] = fl['Kms Driven'].fillna(0).astype(str).str.replace(',', '').astype(int)
+fl['Kms_Driven'] = fl['Kms_Driven'].fillna(0).astype(str).str.replace(',', '').astype(int)
 fl['Max Power'] = fl['Max Power'].str.extract(r'(\d+\.?\d*)').astype(float)
 
 # Function to predict car prices
@@ -53,7 +53,7 @@ def set_bg_image(image_path):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Set your background image file path
-set_bg_image("E:\DSDemo\env\project\env\Scripts\env\pngtree-gray-coupe-plugin-hybrid-3d-rendering-a-concept-sports-car-with-image_3700199.jpg")
+set_bg_image("pngtree.jpg")
 
 # Streamlit app
 st.title("Car Price Prediction Chatbot 🚗")
@@ -87,5 +87,6 @@ if user_query:
     # Handle unsupported queries
     else:
         st.json({"error": "Sorry, I can only help with price predictions and car details queries right now."})
+
 
 
