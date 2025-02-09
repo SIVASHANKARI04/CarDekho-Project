@@ -5,7 +5,7 @@ import pickle
 import base64
 
 # Load the pickle file containing the model
-model_location = "model.pkl"
+model_location = "car_price_bestmodel.pkl"
 with open(model_location, 'rb') as file:
     model = pickle.load(file)
 
