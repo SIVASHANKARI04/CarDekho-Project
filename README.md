@@ -23,9 +23,14 @@
 🌐 Streamlit on AWS for an interactive user interface
 
 
-🚗 Car Price Prediction App In the ever-evolving automobile market, determining the right price for a car is crucial for both buyers and sellers. The Car Price Prediction App simplifies this process by using machine learning to estimate car prices accurately based on various factors such as brand, model, year, mileage, fuel type, and transmission. With this tool, users can make data-driven decisions and ensure they get the best value.
+🚗 Car Price Prediction App In the ever-evolving automobile market, determining the right price for a car is crucial for both buyers and sellers.
+The Car Price Prediction App simplifies this process by using machine learning to estimate car prices accurately based
+on various factors such as brand, model, year, mileage, fuel type, and transmission. With this tool, users can make
+data-driven decisions and ensure they get the best value.
 
-🎯 The Challenge Pricing a car manually is complex, as multiple factors influence its value. Traditional methods are often time-consuming and may not reflect the latest market trends. This app eliminates guesswork and provides instant predictions with high accuracy.
+🎯 The Challenge Pricing a car manually is complex, as multiple factors influence its value. 
+Traditional methods are often time-consuming and may not reflect the latest market trends.
+This app eliminates guesswork and provides instant predictions with high accuracy.
 
 **🚀 Key Features **
 
