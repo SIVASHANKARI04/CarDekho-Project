@@ -7,7 +7,7 @@
 🔹 Data Analysis: In-depth EDA to uncover insights
 
 🔹 Machine Learning Models:
-
+   
 ✅ Regression Model - Predicts estimate car prices
 
 ✅ Recommendation System - Suggests cars based on user preferences
